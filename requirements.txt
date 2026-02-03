@@ -1,8 +1,6 @@
+groq>=0.4.0
 streamlit
 pandas
 requests
-plotly
-groq
-sentence-transformers>=3.0.0
-scikit-learn
+sentence-transformers
 torch
