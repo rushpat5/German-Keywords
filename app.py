@@ -246,11 +246,12 @@ def process_keywords(df: pd.DataFrame, seeds: List[str], threshold: float, hf_to
     if topic:
         seed_terms.append(topic)
     try:
-        seed_vecs = model.encode(seed_terms, prompt_name="STS", normalize_embeddings=True)
-        cand_vecs = model.encode(candidates, prompt_name="STS", normalize_embeddings=True)
-    except TypeError:
         seed_vecs = model.encode(seed_terms, normalize_embeddings=True)
         cand_vecs = model.encode(candidates, normalize_embeddings=True)
+    except Exception as e:
+        logger.warning(f"Encoding error: {e}")
+        seed_vecs = model.encode(seed_terms)
+        cand_vecs = model.encode(candidates)
     sim = util.cos_sim(cand_vecs, seed_vecs)
     max_sim, _ = torch.max(sim, dim=1)
     out_df = df.copy()
